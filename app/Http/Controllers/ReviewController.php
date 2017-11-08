@@ -26,7 +26,7 @@ class ReviewController extends Controller
         $this->userBeerReviewAuthService = $userBeerReviewAuthService;
     }
 
-    public function getAllReviews($id) {
+    public function getAll($id) {
         
         $review = $this->reviewRepo->all($id);  
         return $this->JSON_Response(true, trans('review.success'), $review, 200);  

@@ -11,7 +11,11 @@
 |
 */
 $router->get('/',  function(){
-    echo "Lumen Beer RESTfull API";  
+    echo "<h1>Lumen Beer RESTfull API</h1>";  
+    echo "<br>";
+    echo "<br> <a href='https://github.com/ReneRautenbach/Lumen-RESTfulAPI'>GIT Repository</a>";
+    echo "<br> <a href='https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki'>Documentation</a>";
+    echo "<br> <a href='api/documentation'>Routes</a>";  
 }); 
 
 $router->group(['prefix' => '/api/v1'], function () use ($router) {
@@ -29,10 +33,10 @@ $router->group(['prefix' => '/api/v1'], function () use ($router) {
 
         //BEER
         $router->get('/', [ 
-            'uses' => 'BeerController@getAllBeers'
+            'uses' => 'BeerController@getAll'
         ]);  
         $router->get('{id}/reviews', [ 
-            'uses' => 'ReviewController@getAllReviews'
+            'uses' => 'ReviewController@getAll'
         ]);  
 
         $router->group(['middleware' => 'auth'], function () use ($router) { 

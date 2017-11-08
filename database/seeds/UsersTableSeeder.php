@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([           
             'id' => 1, 
             'name' => 'Rene Rautenbach', 
-            'email' => 'rene@clickasite.co.za',
+            'email' => 'test@test.com',
             'password' => app('hash')->make('test12'),
             'daily_beer_limit' => '1',
             'created_at' => Carbon::now(),

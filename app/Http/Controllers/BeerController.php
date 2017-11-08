@@ -27,7 +27,7 @@ class BeerController extends Controller
         $this->userBeerAuthService = $userBeerAuthService;
     }
  
-    public function getAllBeers() {   
+    public function getAll() {   
         $beer = $this->beerRepo->all();  
         return $this->JSON_Response(true, trans('beer.success'), $beer, 201); 
         
