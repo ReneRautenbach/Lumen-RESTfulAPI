@@ -23,7 +23,7 @@ The API will provide the following functionality:
 
 ## Official Documentation
 
-Documentation for the API can be found <a href="https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki">here</a>.
+Documentation for the API can be found [here](https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki). 
 
 ## Client Documentation
 
