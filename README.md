@@ -15,7 +15,7 @@ Provide an overall rating calculated based on user reviews for that beer
 
 ## Official Documentation
 
-Documentation for the API can be found here.
+Documentation for the API can be found <a href="https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki">here</a>.
 
 ## Client Documentation
 
