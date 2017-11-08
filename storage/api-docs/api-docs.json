@@ -1,0 +1,586 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Canpango beer API",
+        "description": "Canpango beer API",
+        "contact": {
+            "email": "rene@clickasite.co.za"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/api/v1",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/beers": {
+            "get": {
+                "tags": [
+                    "beer"
+                ],
+                "summary": "List all Beers",
+                "description": "Returns a list of beers",
+                "operationId": "getAllBeers",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/JSONResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "beer"
+                ],
+                "summary": "Add Beer",
+                "description": "Creates a beer if request parameters are valid and the user is allowed to create a beer.",
+                "operationId": "createBeer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "token to be passed as a header",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Beer Object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BeerViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Beer added",
+                        "schema": {
+                            "$ref": "#/definitions/Beer"
+                        }
+                    },
+                    "400": {
+                        "description": "Beer not added. Daily limit reached."
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/beers/{id}/reviews": {
+            "get": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "List of reviews for a beer",
+                "description": "List of reviews for a beer",
+                "operationId": "getAllReviews",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The Id of the beer",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "aroma": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "Add a review of a beer",
+                "description": "Creates a review if request parameters are valid and the user is allowed to create a beer review. One review per user per beer is allowed.",
+                "operationId": "create",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The Id of the beer being reviewed",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "token to be passed as a header",
+                        "required": true,
+                        "type": "string",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Beer Review Object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ReviewViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Beer added",
+                        "schema": {
+                            "$ref": "#/definitions/Review"
+                        }
+                    },
+                    "400": {
+                        "description": "Beer review not added. User limit reached."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register a new user",
+                "description": "Creates a new user.",
+                "operationId": "register",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User Object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserRegisterViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User added",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity."
+                    },
+                    "405": {
+                        "description": "User not added. Validation failed."
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "User Login",
+                "description": "Authenticates username and password and logs a user in.",
+                "operationId": "login",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User Email and password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "headers": {
+                            "X-Rate-Limit": {
+                                "description": "calls per hour allowed by the user",
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Beer": {
+            "required": [
+                "name",
+                "ibu",
+                "calories",
+                "user_id",
+                "abv",
+                "brewery",
+                "location",
+                "style"
+            ],
+            "properties": {
+                "id": {
+                    "description": "The beer unique identifier.",
+                    "format": "int64"
+                },
+                "name": {
+                    "description": "The beer name.",
+                    "format": "string"
+                },
+                "ibu": {
+                    "description": "The beer International Bitterness Units scale value.",
+                    "format": "int32"
+                },
+                "calories": {
+                    "description": "The beer name.",
+                    "format": "int32"
+                },
+                "abv": {
+                    "description": "The beer Alcohol By Volume value.",
+                    "format": "float"
+                },
+                "brewery": {
+                    "description": "The brewery name.",
+                    "format": "string"
+                },
+                "location": {
+                    "description": "The brewery location.",
+                    "format": "string"
+                },
+                "style": {
+                    "description": "The beer style.",
+                    "format": "string"
+                },
+                "user_id": {
+                    "description": "The user who added the beer",
+                    "format": "int64"
+                },
+                "created_at": {
+                    "description": "The date time the beer was added",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "description": "The date time the beer was updated",
+                    "format": "date-time"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "Beer"
+            }
+        },
+        "Review": {
+            "required": [
+                "aroma",
+                "appearance",
+                "taste",
+                "user_id",
+                "beer_id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "The review unique identifier.",
+                    "format": "int64"
+                },
+                "user_id": {
+                    "description": "The user who added the review",
+                    "format": "int64"
+                },
+                "beer_id": {
+                    "description": "The beer being reviewed",
+                    "format": "int64"
+                },
+                "aroma": {
+                    "description": "The beer aroma review value between 1 and 5",
+                    "format": "int32"
+                },
+                "appearance": {
+                    "description": "The beer appearance review value between 1 and 5",
+                    "format": "int32"
+                },
+                "taste": {
+                    "description": "The beer taste review value between 1 and 10",
+                    "format": "int32"
+                },
+                "created_at": {
+                    "description": "The date time the review was added",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "description": "The date time the review was updated",
+                    "format": "date-time"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "Review"
+            }
+        },
+        "User": {
+            "required": [
+                "name",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "id": {
+                    "description": "The unique user identifier.",
+                    "format": "int64"
+                },
+                "name": {
+                    "description": "The user name",
+                    "format": "string"
+                },
+                "password": {
+                    "description": "The user password",
+                    "format": "password"
+                },
+                "email": {
+                    "description": "The unique user email",
+                    "format": "email"
+                },
+                "daily_beer_limit": {
+                    "description": "The numbers of beers the user can add per day.",
+                    "format": "int32"
+                },
+                "created_at": {
+                    "description": "The date time the user was added",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "description": "The date time the user was updated",
+                    "format": "date-time"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "User"
+            }
+        },
+        "BeerViewModel": {
+            "required": [
+                "name",
+                "ibu",
+                "calories",
+                "abv",
+                "brewery",
+                "location",
+                "style"
+            ],
+            "properties": {
+                "name": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "ibu": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "calories": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "abv": {
+                    "description": "",
+                    "type": "number",
+                    "format": "float"
+                },
+                "brewery": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "location": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "style": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "BeerViewModel"
+            }
+        },
+        "JSONResponse": {
+            "properties": {
+                "success": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "message": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "data": {
+                    "description": "",
+                    "type": "string",
+                    "format": "array"
+                },
+                "error": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "code": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "JSONResponse"
+            }
+        },
+        "ReviewViewModel": {
+            "required": [
+                "aroma",
+                "appearance",
+                "taste"
+            ],
+            "properties": {
+                "aroma": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "appearance": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "taste": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "ReviewViewModel"
+            }
+        },
+        "UserLoginViewModel": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "password": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "UserLoginViewModel"
+            }
+        },
+        "UserRegisterViewModel": {
+            "required": [
+                "name",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "name": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "email": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "password": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "password_confirmation": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "UserRegisterViewModel"
+            }
+        }
+    }
+}
