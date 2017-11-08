@@ -4,14 +4,14 @@ The Lumen RESTful JSON API is a simple, JSON-backed interface that allows a regi
 
 The API will provide the following functionality:
 
-User Registration
-User Login
-List all beers
-Add a beer (one per day)
-View details of any beer
-View all ratings of any beer
-Rate a beer on the specific points of interest, only one rating per user per beer allowed: Aroma (1-5) Appearance (1-5) Taste (1-10)
-Provide an overall rating calculated based on user reviews for that beer
+* User Registration
+* User Login
+* List all beers
+* Add a beer (one per day)
+* View details of any beer
+* View all ratings of any beer
+* Rate a beer on the specific points of interest, only one rating per user per beer allowed: Aroma (1-5) Appearance (1-5) Taste (1-10)
+* Provide an overall rating calculated based on user reviews for that beer
 
 ## Official Documentation
 
