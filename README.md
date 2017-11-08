@@ -13,6 +13,14 @@ The API will provide the following functionality:
 * Rate a beer on the specific points of interest, only one rating per user per beer allowed: Aroma (1-5) Appearance (1-5) Taste (1-10)
 * Provide an overall rating calculated based on user reviews for that beer
 
+
+### Provides: 
+ 
+* Repository
+* Eloquent ORM
+* Database Seeding
+* Swagger UI integration
+
 ## Official Documentation
 
 Documentation for the API can be found <a href="https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki">here</a>.
