@@ -1,4 +1,4 @@
-e# Lumen PHP RESTful API for managing Beer
+# Lumen PHP RESTful API for managing Beer
 
 The Lumen RESTful JSON API is a simple, JSON-backed interface that allows a registered user to add and review beers.
 
@@ -27,30 +27,30 @@ The API will provide the following functionality:
 `m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)`
 `C = the midpoint of the scale (2.5 in our case)`
 
-### Requirements
+# Requirements
 
 * Composer
 * PHP 7
 * MySQL Database
 
 
-### Provides: 
+# Provides: 
  
 * Repository
 * Eloquent ORM
 * Database Seeding
 * Swagger UI integration
 
-## Official Documentation
+# Official Documentation
 
 Documentation for the API can be found [here](https://github.com/ReneRautenbach/Lumen-RESTfulAPI/wiki). 
 
-## Client Documentation
+# Client Documentation
 
 Hosted at Swagger Hub
 [https://app.swaggerhub.com/apis/clickasite/BeerAPI/1.0.0](https://app.swaggerhub.com/apis/clickasite/BeerAPI/1.0.0)
 
-## Issues
+# Issues
 
 If you experience any issues, please send an e-mail to Rene Rautenbach at [rene@clickasite.co.za](mailto:rene@clickasite.co.za).
  
