@@ -12,6 +12,21 @@
  *         @SWG\Contact(
  *             email="rene@clickasite.co.za"
  *         ),
+ *      ),
+ * 
+ *     @SWG\Definition(
+ *         definition="ErrorModel",
+ *         type="object",
+ *         required={"code", "message"},
+ *         @SWG\Property(
+ *             property="code",
+ *             type="integer",
+ *             format="int32"
+ *         ),
+ *         @SWG\Property(
+ *             property="message",
+ *             type="string"
+ *         )
  *     )
- * ) 
- */ 
+ * )
+ */

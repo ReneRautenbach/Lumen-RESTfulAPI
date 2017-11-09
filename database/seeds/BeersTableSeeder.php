@@ -21,7 +21,7 @@ class BeersTableSeeder extends Seeder
             'brewery' => 'Mikkeller Brewing San Diego',
             'location' => "San Diego",
             'user_id' => 1,
-            'style' => 'American IPA',
+            'style_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => null
             ]);
@@ -34,7 +34,7 @@ class BeersTableSeeder extends Seeder
                 'abv' => 4.8,
                 'brewery' => 'Stone Go To IPA',
                 'location' => "",
-                'style' => 'American IPA', 
+                'style_id' => 2, 
                 'user_id' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => null
@@ -45,7 +45,7 @@ class BeersTableSeeder extends Seeder
                     'ibu' => 5,
                     'calories' => 55.5,
                     'abv' => 4.8,
-                    'style' => 'American IPA',
+                    'style_id' => 3,
                     'brewery' => 'Asheville Brewing Company',
                     'location' => "", 
                     'user_id' => 1,

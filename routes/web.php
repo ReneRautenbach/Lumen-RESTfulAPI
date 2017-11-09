@@ -20,31 +20,35 @@ $router->get('/',  function(){
 
 $router->group(['prefix' => '/api/v1'], function () use ($router) {
              
-    $router->post('user/register', [ 
-        'uses' => 'AuthenticateController@register'
-    ]);
+    $router->post('user/register', [ 'uses' => 'AuthenticateController@register' ]); 
+    $router->post('user/login', [ 'uses' => 'AuthenticateController@login' ]);
+    $router->get('styles', [ 'uses' => 'StyleController@getFilteredList' ]);
 
-    $router->post('user/login', [ 
-        'uses' => 'AuthenticateController@login'
-    ]);
+    
+    $router->group(['prefix' => 'reviews'], function () use ($router) { 
+        
+        // GET OVERALL RATING BY BEER
+        $router->get('/overall', [ 'uses' => 'ReviewController@getOverallReviewsByBeer' ]);  
 
+        // GET REVIEW WITH $review_id
+        $router->get('/{review_id}', [ 'uses' => 'ReviewController@get' ]);   
+    });
     
     $router->group(['prefix' => 'beers'], function () use ($router) {
 
-        //BEER
-        $router->get('/', [ 
-            'uses' => 'BeerController@getAll'
-        ]);  
-        $router->get('{id}/reviews', [ 
-            'uses' => 'ReviewController@getAll'
-        ]);  
+        // GET ALL BEERS
+        $router->get('/', [ 'uses' => 'BeerController@getFilteredList' ]);  
+        // GET BEER WITH $beer_id
+        $router->get('/{beer_id}', [ 'uses' => 'BeerController@get' ]);  
+         // GET ALL BEER REVIEWS
+        $router->get('/{beer_id}/reviews', [ 'uses' => 'ReviewController@getAll' ]);   
 
         $router->group(['middleware' => 'auth'], function () use ($router) { 
-                //BEER
+                // CREATE BEER
                 $router->post('/', [ 
                     'uses' => 'BeerController@create'
                 ]); 
-                //BEER REVIEWS 
+                // CREATE BEER REVIEW
                 $router->post('{id}/reviews', [ 
                     'uses' => 'ReviewController@create'
                 ]);  
@@ -53,17 +57,4 @@ $router->group(['prefix' => '/api/v1'], function () use ($router) {
 });
 
  
- 
-
-
-$router->put('/api/beers/{beerId}',[ 
-    'uses' => 'BeerController@update'
-]);
-
-
-//beer reviews
-$router->get('/api/beers/{id}/reviews', [
-    'as' => 'beer_reviews', 
-    'uses' => 'ReviewController@index'
-]
-);
+  

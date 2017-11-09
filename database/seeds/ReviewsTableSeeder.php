@@ -36,7 +36,7 @@ class ReviewsTableSeeder extends Seeder
             'id' => 3,
             'user_id' => 1,
             'beer_id' => 2,
-            'aroma' => 1,
+            'aroma' => 2,
             'appearance' => 4,
             'taste' => 5,
             'created_at' => Carbon::now(),

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use Carbon\Carbon;
 use Illuminate\Database\Connection; 
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Review; 
  
@@ -24,8 +25,12 @@ class ReviewRepository extends Repository
             return $review;  
         }
 
-        public function all($id) { 
-            return Review::where('beer_id', $id)->get()->toArray();  
+        public function all($beer_id) { 
+            return Review::where('beer_id', $beer_id)->get()->toArray();  
+        }
+
+        public function get($review_id) {
+            return Review::find($review_id);
         }
 
         public function beerReviewedCountByUser($user_id, $beer_id) {
@@ -41,5 +46,14 @@ class ReviewRepository extends Repository
               return  Review::where( 'beer_id','=', $beer_id )
                       ->groupBy('beer_id')
                       ->sum(); 
+          }
+
+          public function getOverallReviewsByBeer() { 
+
+            return  DB::table('reviews')
+                        ->select(DB::raw('beer_id , count(*) as review_count, sum(aroma) as overall_aroma, 
+                                        sum(appearance)  as overall_appearance, sum(taste) as overall_taste'))
+                        ->groupBy('beer_id')
+                        ->get();
           }
 }

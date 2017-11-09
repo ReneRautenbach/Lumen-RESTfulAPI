@@ -26,11 +26,98 @@
                 "produces": [
                     "application/json"
                 ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter by beer name and brewery.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number to return",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of result per page to return.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "orderbydirection",
+                        "in": "query",
+                        "description": "Sort direction asc or desc.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/JSONResponse"
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/definitions/Beer"
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
                 }
@@ -49,7 +136,7 @@
                     {
                         "name": "Authorization",
                         "in": "header",
-                        "description": "token to be passed as a header",
+                        "description": "Token to be passed as a header. Use login or register to get the token.Format: Bearer xxxxxx",
                         "required": true,
                         "type": "string",
                         "items": {
@@ -73,7 +160,7 @@
                             "$ref": "#/definitions/Beer"
                         }
                     },
-                    "400": {
+                    "401": {
                         "description": "Beer not added. Daily limit reached."
                     },
                     "405": {
@@ -82,20 +169,20 @@
                 }
             }
         },
-        "/beers/{id}/reviews": {
+        "/beers/{beer_id}": {
             "get": {
                 "tags": [
-                    "review"
+                    "beer"
                 ],
-                "summary": "List of reviews for a beer",
-                "description": "List of reviews for a beer",
-                "operationId": "getAllReviews",
+                "summary": "Return the beer with the given id",
+                "description": "Return the beer with given id",
+                "operationId": "getBeer",
                 "produces": [
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "beer_id",
                         "in": "path",
                         "description": "The Id of the beer",
                         "required": true,
@@ -109,11 +196,168 @@
                             "type": "array",
                             "items": {
                                 "properties": {
-                                    "id": {
-                                        "type": "integer"
+                                    "success": {
+                                        "type": "boolean"
                                     },
-                                    "aroma": {
-                                        "type": "integer"
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "$ref": "#/definitions/Beer"
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reviews/{review_id}": {
+            "get": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "Return the review with the given id",
+                "description": "Return the review with the given id",
+                "operationId": "getReview",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "review_id",
+                        "in": "path",
+                        "description": "The Id of the review",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "$ref": "#/definitions/Review"
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        },
+        "/reviews/overall": {
+            "get": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "Provides the overall ratings of all beers",
+                "description": "Provides the overall ratings of all beers",
+                "operationId": "getBeerReviewOverall",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "beer": {
+                                                    "$ref": "#/definitions/Beer"
+                                                },
+                                                "overall": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        },
+        "/beers/{beer_id}/reviews": {
+            "get": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "List of reviews for a beer",
+                "description": "List of reviews for a beer",
+                "operationId": "getAllReviews",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "beer_id",
+                        "in": "path",
+                        "description": "The Id of the beer",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Review"
+                                        }
+                                    },
+                                    "error": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -137,7 +381,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "beer_id",
                         "in": "path",
                         "description": "The Id of the beer being reviewed",
                         "required": true,
@@ -146,7 +390,7 @@
                     {
                         "name": "Authorization",
                         "in": "header",
-                        "description": "token to be passed as a header",
+                        "description": "Token to be passed as a header. Use login or register to get the token.Format: Bearer xxxxxx",
                         "required": true,
                         "type": "string",
                         "items": {
@@ -167,17 +411,211 @@
                     "201": {
                         "description": "Beer added",
                         "schema": {
-                            "$ref": "#/definitions/Review"
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "$ref": "#/definitions/Review"
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     },
-                    "400": {
+                    "401": {
                         "description": "Beer review not added. User limit reached."
                     },
                     "404": {
-                        "description": "Not found."
+                        "description": "Review not added. Beer not found."
                     },
                     "405": {
                         "description": "Validation exception"
+                    }
+                }
+            }
+        },
+        "/beers/{beer_id}/reviews/overall": {
+            "get": {
+                "tags": [
+                    "review"
+                ],
+                "summary": "Provides the overall rating of a beer",
+                "description": "Provides the overall rating of a beer",
+                "operationId": "getBeerReviewOverall",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "beer_id",
+                        "in": "path",
+                        "description": "The Id of the beer",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "beer": {
+                                                    "$ref": "#/definitions/Beer"
+                                                },
+                                                "overall_aroma": {
+                                                    "type": "integer"
+                                                },
+                                                "overall_appearance": {
+                                                    "type": "integer"
+                                                },
+                                                "overall_taste": {
+                                                    "type": "integer"
+                                                },
+                                                "overall": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        },
+        "/styles": {
+            "post": {
+                "tags": [
+                    "style"
+                ],
+                "summary": "Filtered list of styles",
+                "description": "Returns filtered list of beer styles",
+                "operationId": "getStyles",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter by style description.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number to return",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of result per page to return.",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "orderbydirection",
+                        "in": "query",
+                        "description": "Sort direction asc or desc.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "success": {
+                                        "type": "boolean"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/definitions/StyleViewModel"
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
                 }
             }
@@ -208,7 +646,15 @@
                     "200": {
                         "description": "User added",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     },
                     "404": {
@@ -249,7 +695,15 @@
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         },
                         "headers": {
                             "X-Rate-Limit": {
@@ -264,6 +718,22 @@
         }
     },
     "definitions": {
+        "ErrorModel": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "Beer": {
             "required": [
                 "name",
@@ -278,46 +748,54 @@
             "properties": {
                 "id": {
                     "description": "The beer unique identifier.",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "name": {
                     "description": "The beer name.",
-                    "format": "string"
+                    "type": "string"
                 },
                 "ibu": {
                     "description": "The beer International Bitterness Units scale value.",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "calories": {
                     "description": "The beer name.",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "abv": {
                     "description": "The beer Alcohol By Volume value.",
+                    "type": "number",
                     "format": "float"
                 },
                 "brewery": {
                     "description": "The brewery name.",
-                    "format": "string"
+                    "type": "string"
                 },
                 "location": {
                     "description": "The brewery location.",
-                    "format": "string"
+                    "type": "string"
                 },
-                "style": {
+                "style_id": {
                     "description": "The beer style.",
-                    "format": "string"
+                    "type": "integer",
+                    "format": "int32"
                 },
                 "user_id": {
                     "description": "The user who added the beer",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "created_at": {
                     "description": "The date time the beer was added",
+                    "type": "string",
                     "format": "date-time"
                 },
                 "updated_at": {
                     "description": "The date time the beer was updated",
+                    "type": "string",
                     "format": "date-time"
                 }
             },
@@ -337,40 +815,93 @@
             "properties": {
                 "id": {
                     "description": "The review unique identifier.",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "user_id": {
                     "description": "The user who added the review",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "beer_id": {
                     "description": "The beer being reviewed",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "aroma": {
                     "description": "The beer aroma review value between 1 and 5",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "appearance": {
                     "description": "The beer appearance review value between 1 and 5",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "taste": {
                     "description": "The beer taste review value between 1 and 10",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "created_at": {
                     "description": "The date time the review was added",
+                    "type": "string",
                     "format": "date-time"
                 },
                 "updated_at": {
                     "description": "The date time the review was updated",
+                    "type": "string",
                     "format": "date-time"
                 }
             },
             "type": "object",
             "xml": {
                 "name": "Review"
+            }
+        },
+        "Style": {
+            "required": [
+                "style"
+            ],
+            "properties": {
+                "id": {
+                    "description": "The style unique identifier.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "style": {
+                    "description": "The style name.",
+                    "type": "string"
+                },
+                "style_category_id": {
+                    "description": "The category of the style.",
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "Style"
+            }
+        },
+        "StyleCategory": {
+            "required": [
+                "style_category"
+            ],
+            "properties": {
+                "id": {
+                    "description": "The style category unique identifier.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "style_category": {
+                    "description": "The style category.",
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "StyleCategory"
             }
         },
         "User": {
@@ -382,30 +913,36 @@
             "properties": {
                 "id": {
                     "description": "The unique user identifier.",
+                    "type": "integer",
                     "format": "int64"
                 },
                 "name": {
                     "description": "The user name",
-                    "format": "string"
+                    "type": "string"
                 },
                 "password": {
                     "description": "The user password",
+                    "type": "string",
                     "format": "password"
                 },
                 "email": {
                     "description": "The unique user email",
+                    "type": "string",
                     "format": "email"
                 },
                 "daily_beer_limit": {
-                    "description": "The numbers of beers the user can add per day.",
+                    "description": "The numbers of beers the user can add per day. Default value is 1.",
+                    "type": "integer",
                     "format": "int32"
                 },
                 "created_at": {
                     "description": "The date time the user was added",
+                    "type": "string",
                     "format": "date-time"
                 },
                 "updated_at": {
                     "description": "The date time the user was updated",
+                    "type": "string",
                     "format": "date-time"
                 }
             },
@@ -455,7 +992,40 @@
                     "type": "string",
                     "format": "string"
                 },
-                "style": {
+                "style_id": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "BeerViewModel"
+            }
+        },
+        "FilterViewModel": {
+            "required": [
+                "aroma",
+                "appearance",
+                "taste"
+            ],
+            "properties": {
+                "filter": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "page": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "per_page": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "orderby": {
                     "description": "",
                     "type": "string",
                     "format": "string"
@@ -463,7 +1033,7 @@
             },
             "type": "object",
             "xml": {
-                "name": "BeerViewModel"
+                "name": "FilterViewModel"
             }
         },
         "JSONResponse": {
@@ -525,6 +1095,34 @@
             "type": "object",
             "xml": {
                 "name": "ReviewViewModel"
+            }
+        },
+        "StyleViewModel": {
+            "properties": {
+                "style_id": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "style": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                },
+                "style_category_id": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                },
+                "style_category": {
+                    "description": "",
+                    "type": "string",
+                    "format": "string"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "StyleViewModel"
             }
         },
         "UserLoginViewModel": {

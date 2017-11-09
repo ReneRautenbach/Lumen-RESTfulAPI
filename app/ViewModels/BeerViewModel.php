@@ -53,8 +53,8 @@ class BeerViewModel
     public $location;
     
      /**
-     * @SWG\Property(format="string")
-     * @var string
+     * @SWG\Property(format="integer")
+     * @var integer
      */
-    public $style;
+    public $style_id;
 }

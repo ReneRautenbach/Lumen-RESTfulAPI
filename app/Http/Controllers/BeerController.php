@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Repository\BeerRepository;
 use App\Services\UserBeerAuthService;
+use App\Services\PagingService;
 use Auth; 
 
 class BeerController extends Controller
 {
-
+    
     private $userBeerAuthService;
+    private $pagingService;
     private $beerRepo;
     
     /**
@@ -21,18 +23,27 @@ class BeerController extends Controller
      * @return void
      */
     
-    public function __construct(BeerRepository $beerRepository, UserBeerAuthService $userBeerAuthService)
+    public function __construct(BeerRepository $beerRepository,  PagingService $pagingService, UserBeerAuthService $userBeerAuthService)
     { 
         $this->beerRepo = $beerRepository;
         $this->userBeerAuthService = $userBeerAuthService;
+        $this->pagingService = $pagingService;
+        $this->pagingService->setDefaultOrderBy('name');
     }
  
-    public function getAll() {   
-        $beer = $this->beerRepo->all();  
-        return $this->JSON_Response(true, trans('beer.success'), $beer, 201); 
+    public function getFilteredList(Request $request) { 
         
+        $pagingArray = $this->pagingService->make($request);
+        
+        $beer = $this->beerRepo->all($pagingArray);  
+        return $this->JSON_Response(true, trans('beer.success'), $beer, 200);  
     }
 
+    public function get($beer_id) {   
+        $beer = $this->beerRepo->get($beer_id);  
+        return $this->JSON_Response(true, trans('beer.success'), $beer, 200);  
+    }
+ 
     /**
      * Creates a beer is request parameters are valid and the user is allowed to create a beer.
      *
@@ -52,13 +63,13 @@ class BeerController extends Controller
                 
                 $this->validate($request, $this->rules());  
  
-                $beer = $this->beerRepo->create( $request['name'], $request['ibu'], $request['calories'], $request['brewery'], $request['location'], $request['style']);
+                $beer = $this->beerRepo->create( $request['name'], $request['ibu'], $request['calories'], $request['brewery'], $request['location'], $request['style_id']);
                 return $this->JSON_Response(true, trans('beer.create-success'), $beer, 201); 
                 
             } 
             else 
             {
-                return $this->JSON_Response(false, trans('beer.create-limit') , null, 400);
+                return $this->JSON_Response(false, trans('beer.create-limit') , null, 401);
             }
                 
         }  
@@ -89,7 +100,7 @@ class BeerController extends Controller
             'abv' => 'required',
             'brewery' => 'required|string',
             'location' => 'required|string',
-            'style' => 'required|string' 
+            'style_id' => 'required|integer' 
         );
 
     }

@@ -21,13 +21,13 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
 {
 
     /** 
-    * @SWG\Property(format="int64", property="id", description="The unique user identifier.") 
-    * @SWG\Property(format="string", property="name", description="The user name")
-    * @SWG\Property(format="password", property="password", description="The user password") 
-    * @SWG\Property(format="email", property="email", description="The unique user email")
-    * @SWG\Property(format="int32", property="daily_beer_limit", description="The numbers of beers the user can add per day.")
-    * @SWG\Property(format="date-time", property="created_at", description="The date time the user was added")
-    * @SWG\Property(format="date-time", property="updated_at", description="The date time the user was updated")
+    * @SWG\Property(format="int64",type="integer", property="id", description="The unique user identifier.") 
+    * @SWG\Property(type="string", property="name", description="The user name")
+    * @SWG\Property(type="string",format="password" , property="password", description="The user password") 
+    * @SWG\Property(format="email", type="string", property="email", description="The unique user email")
+    * @SWG\Property(format="int32", type="integer", property="daily_beer_limit", description="The numbers of beers the user can add per day. Default value is 1.")
+    * @SWG\Property(format="date-time", type="string", property="created_at", description="The date time the user was added")
+    * @SWG\Property(format="date-time", type="string", property="updated_at", description="The date time the user was updated")
     */ 
 
     use Authenticatable, Authorizable;

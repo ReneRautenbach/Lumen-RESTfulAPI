@@ -1,5 +1,6 @@
 <?php
 /**
+ * 
  * @SWG\Post(
  *     path="/user/register",
  *     summary="Register a new user",
@@ -18,7 +19,12 @@
  *     @SWG\Response(
  *         response=200,
  *         description="User added",
- *         @SWG\Schema(ref="#/definitions/User")
+ *        @SWG\Schema(  type="array",
+ *             @SWG\Items(
+ *                 type="object",
+ *                 @SWG\Property(property="token", type="string") 
+ *             ),
+ * ),
  *     ),
  *     @SWG\Response(
  *         response=404,
@@ -51,8 +57,13 @@
  *     ) ,
  *    @SWG\Response(
  *       response=200,
- *       description="successful operation",
- *       @SWG\Schema(type="string"),
+ *       description="successful operation", 
+ *        @SWG\Schema(  type="array",
+ *             @SWG\Items(
+ *                 type="object",
+ *                 @SWG\Property(property="token", type="string") 
+ *             ),
+ *      ),
  *       @SWG\Header(
  *         header="X-Rate-Limit",
  *         type="integer",

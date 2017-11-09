@@ -21,7 +21,7 @@ class CreateTableBeers extends Migration
             $table->decimal('abv', 5, 2);
             $table->string( 'brewery' ); 
             $table->string( 'location' ); 
-            $table->string( 'style' );  
+            $table->integer( 'style_id' );  
             $table->integer( 'user_id' ); 
             $table->timestamps();
         });
