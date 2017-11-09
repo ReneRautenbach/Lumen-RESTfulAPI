@@ -13,42 +13,30 @@ namespace App\ViewModels;
 class ReviewTotalsViewModel
 {    
     /**
-     * @SWG\Property(format="integer")
-     * @var integer
+     * @SWG\Property(format="float")
+     * @var float
      */
-    public $aroma_total;
+    public $weighted_average;
     
 
     /**
-     * @SWG\Property(format="integer")
-     * @var integer
+     * @SWG\Property(format="float")
+     * @var float
      */
-    public $appearance_total;
+    public $mean_average;
     
 
     /**
-     * @SWG\Property(format="integer")
-     * @var integer
+     * @SWG\Property(format="float")
+     * @var float
      */
-    public $taste_total;
-    
-
-    /**
-     * @SWG\Property(format="integer")
-     * @var integer
-     */
-    public $palate_total; 
-
+    public $scale;
      
     /**
      * @SWG\Property(format="integer")
      * @var integer
      */
-    public $overall_total; 
-    
-    /**
-     * @SWG\Property(format="integer")
-     * @var integer
-     */
     public $number_of_ratings; 
+
+     
 }

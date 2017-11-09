@@ -51,10 +51,9 @@
  *                 @SWG\Property(property="message", type="string") ,
  *                 @SWG\Property(property="data", type="array",  
  *                          @SWG\Items( 
- *                           @SWG\Property(property="beer", ref="#/definitions/Beer"),
- *                           @SWG\Property(property="overall", type="integer")  
+ *                           @SWG\Property(property="beer_id", ref="#/definitions/ReviewTotalsViewModel"),
  *                          )
- *                 ),
+ *                  ),
  *                 @SWG\Property(property="error", type="string")
  *             )
  *         ),
@@ -104,7 +103,12 @@
  * )
 * @SWG\Get(  path="/beers/{beer_id}/reviews/overall",
  *     summary="Provides the overall rating of a beer",
- *     description="Provides the overall rating of a beer",
+ *     description=" Calculation:  weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  
+ *     where:
+ *     R = average for the beer (mean) = (Rating)
+ *     v = number of reviews for the beer = (Rate Count)
+ *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)
+ *     C = the midpoint of the scale (2.5 in our case)",
  *     operationId="getBeerReviewOverall",
  *     tags={"review"},
  *     produces={"application/json"},   
@@ -126,11 +130,7 @@
  *                 @SWG\Property(property="message", type="string"),
  *                 @SWG\Property(property="data", type="array",  
  *                          @SWG\Items( 
- *                           @SWG\Property(property="beer", ref="#/definitions/Beer"),
- *                           @SWG\Property(property="overall_aroma", type="integer") , 
- *                           @SWG\Property(property="overall_appearance", type="integer") , 
- *                           @SWG\Property(property="overall_taste", type="integer")  ,
- *                           @SWG\Property(property="overall", type="integer")  
+ *                           @SWG\Property(property="beer_id", ref="#/definitions/ReviewTotalsViewModel"),
  *                          )
  *                  ),
  *                 @SWG\Property(property="error", type="string")
@@ -139,7 +139,7 @@
  *     ),
  *     @SWG\Response(
  *         response="404",
- *         description="Not found.",
+ *         description="Review Overall Calculation not available. Beer not found.",
  *     ), 
  * )
  *  

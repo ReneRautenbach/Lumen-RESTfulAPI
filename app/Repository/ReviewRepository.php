@@ -39,21 +39,20 @@ class ReviewRepository extends Repository
                     ->where('beer_id','=', $beer_id )
                     ->groupBy('user_id')
                     ->count(); 
-        }
+        } 
 
-        public function beerReviewedSum($beer_id) {
-            
-              return  Review::where( 'beer_id','=', $beer_id )
-                      ->groupBy('beer_id')
-                      ->sum(); 
-          }
+          public function getOverallReviewsByBeer($beer_id='') { 
 
-          public function getOverallReviewsByBeer() { 
+            $query = DB::table('reviews')
+                        ->select(DB::raw('beer_id , sum(aroma+appearance+taste)/count(beer_id) as average, 
+                                        count(beer_id) as review_count, sum(aroma) as aroma_total, 
+                                        sum(appearance) as appearance_total, sum(taste) as taste_total')); 
 
-            return  DB::table('reviews')
-                        ->select(DB::raw('beer_id , count(*) as review_count, sum(aroma) as overall_aroma, 
-                                        sum(appearance)  as overall_appearance, sum(taste) as overall_taste'))
-                        ->groupBy('beer_id')
-                        ->get();
+            if($beer_id > 0) { 
+                $query->where('beer_id', '=', $beer_id); 
+            }
+
+            $query->groupBy('beer_id');
+            return $query->get()->toArray();
           }
 }

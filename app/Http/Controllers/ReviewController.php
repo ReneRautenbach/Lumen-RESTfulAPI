@@ -8,25 +8,27 @@ use Illuminate\Support\Facades\Validator;
 use App\Repository\ReviewRepository;
 use App\Repository\BeerRepository;
 use App\Services\UserBeerReviewAuthService;
+use App\Services\CalculationService;
 use Auth; 
  
 class ReviewController extends Controller
 {
-    
-    private $userBeerReviewAuthService;
     private $reviewRepo;
     private $beerRepo;
+    private $calculationService; 
+    private $userBeerReviewAuthService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(BeerRepository $beerRepository, ReviewRepository $reviewRepository, UserBeerReviewAuthService $userBeerReviewAuthService)
+    public function __construct(CalculationService $calculationService, BeerRepository $beerRepository, ReviewRepository $reviewRepository, UserBeerReviewAuthService $userBeerReviewAuthService)
     { 
         $this->reviewRepo = $reviewRepository;
         $this->beerRepo = $beerRepository;
         $this->userBeerReviewAuthService = $userBeerReviewAuthService;
+        $this->calculationService = $calculationService;
     }
 
     public function getAll($beer_id) {
@@ -81,6 +83,29 @@ class ReviewController extends Controller
            return $this->JSON_Response(false, trans('review.create-exception') , null, 400, $e->errors()); 
        }
 
+   }
+
+   public function getOverallRatings($beer_id='') { 
+
+            if($beer_id > 0){
+                // Validates that the beer exists
+                if (!$this->beerRepo->exists($beer_id)) {  
+                    return $this->JSON_Response(false, trans('review.beer-notfound') , null, 404);
+                } 
+            }
+
+             $result = array();
+             
+             $review_collection = $this->reviewRepo->getOverallReviewsByBeer($beer_id);  
+              
+             foreach($review_collection as $review ){ 
+                $result[$review->beer_id]['weighted_average'] = $this->calculationService->getWeightedAverage($review->review_count,$review->average);
+                $result[$review->beer_id]['mean_average'] = $this->calculationService->getAverage($review->average);
+                $result[$review->beer_id]['scale'] = $this->calculationService->getScale();
+                $result[$review->beer_id]['number_of_ratings'] = $review->review_count;
+             }
+
+            return $this->JSON_Response(true, trans('review.success'), $result, 200);  
    }
 
  

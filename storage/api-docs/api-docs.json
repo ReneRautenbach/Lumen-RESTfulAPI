@@ -294,11 +294,8 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "beer": {
-                                                    "$ref": "#/definitions/Beer"
-                                                },
-                                                "overall": {
-                                                    "type": "integer"
+                                                "beer_id": {
+                                                    "$ref": "#/definitions/ReviewTotalsViewModel"
                                                 }
                                             }
                                         }
@@ -449,7 +446,7 @@
                     "review"
                 ],
                 "summary": "Provides the overall rating of a beer",
-                "description": "Provides the overall rating of a beer",
+                "description": " Calculation weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  \r\n *     where:\r\n *     R = average for the beer (mean) = (Rating)\r\n *     v = number of reviews for the beer = (Rate Count)\r\n *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)\r\n *     C = the midpoint of the scale (2.75 in our case)",
                 "operationId": "getBeerReviewOverall",
                 "produces": [
                     "application/json"
@@ -480,20 +477,8 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "beer": {
-                                                    "$ref": "#/definitions/Beer"
-                                                },
-                                                "overall_aroma": {
-                                                    "type": "integer"
-                                                },
-                                                "overall_appearance": {
-                                                    "type": "integer"
-                                                },
-                                                "overall_taste": {
-                                                    "type": "integer"
-                                                },
-                                                "overall": {
-                                                    "type": "integer"
+                                                "beer_id": {
+                                                    "$ref": "#/definitions/ReviewTotalsViewModel"
                                                 }
                                             }
                                         }
@@ -1067,6 +1052,34 @@
             "type": "object",
             "xml": {
                 "name": "JSONResponse"
+            }
+        },
+        "ReviewTotalsViewModel": {
+            "properties": {
+                "weighted_average": {
+                    "description": "",
+                    "type": "number",
+                    "format": "float"
+                },
+                "mean_average": {
+                    "description": "",
+                    "type": "number",
+                    "format": "float"
+                },
+                "scale": {
+                    "description": "",
+                    "type": "number",
+                    "format": "float"
+                },
+                "number_of_ratings": {
+                    "description": "",
+                    "type": "integer",
+                    "format": "integer"
+                }
+            },
+            "type": "object",
+            "xml": {
+                "name": "ReviewTotalsViewModel"
             }
         },
         "ReviewViewModel": {

@@ -28,7 +28,7 @@ $router->group(['prefix' => '/api/v1'], function () use ($router) {
     $router->group(['prefix' => 'reviews'], function () use ($router) { 
         
         // GET OVERALL RATING BY BEER
-        $router->get('/overall', [ 'uses' => 'ReviewController@getOverallReviewsByBeer' ]);  
+        $router->get('/overall', [ 'uses' => 'ReviewController@getOverallRatings' ]);  
 
         // GET REVIEW WITH $review_id
         $router->get('/{review_id}', [ 'uses' => 'ReviewController@get' ]);   
@@ -42,7 +42,9 @@ $router->group(['prefix' => '/api/v1'], function () use ($router) {
         $router->get('/{beer_id}', [ 'uses' => 'BeerController@get' ]);  
          // GET ALL BEER REVIEWS
         $router->get('/{beer_id}/reviews', [ 'uses' => 'ReviewController@getAll' ]);   
-
+        // GET ALL BEER REVIEW TOTALS
+        $router->get('/{beer_id}/reviews/overall', [ 'uses' => 'ReviewController@getOverallRatings' ]);   
+       
         $router->group(['middleware' => 'auth'], function () use ($router) { 
                 // CREATE BEER
                 $router->post('/', [ 

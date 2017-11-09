@@ -6,7 +6,8 @@ return [
     'create-exception' => 'Review not added.',
     'create-success' => 'Review added.',
     'create-limit' => 'Review not added. User can only review a beer once.',
-    'review.create-notfound' => "Review not added. Beer not found"
+    'create-notfound' => "Review not added. Beer not found.",
+    'beer-notfound' => "Review Overall Calculation not available. Beer not found",
 ];
 
 ?>     
