@@ -47,7 +47,8 @@ Documentation for the API can be found [here](https://github.com/ReneRautenbach/
 
 ## Client Documentation
 
-Hosted at Swagger docs
+Hosted at Swagger Hub
+[https://app.swaggerhub.com/apis/clickasite/BeerAPI/1.0.0](https://app.swaggerhub.com/apis/clickasite/BeerAPI/1.0.0)
 
 ## Issues
 
