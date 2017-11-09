@@ -29,8 +29,8 @@ Documentation for the API can be found [here](https://github.com/ReneRautenbach/
 
 Hosted at Swagger docs
 
-## Security Vulnerabilities
+## Issues
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Rene Rautenbach at rene@clickasite.co.za. All security vulnerabilities will be promptly addressed.
+If you experience any issues, please send an e-mail to Rene Rautenbach at [rene@clickasite.co.za](mailto:rene@clickasite.co.za).
  
  
