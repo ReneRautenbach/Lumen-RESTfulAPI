@@ -1,12 +1,11 @@
 <?php
 /**
  * 
- * @SWG\Post(
- *     path="/user/register",
+* @SWG\Post( path="/user/register",
  *     summary="Register a new user",
  *     description="Creates a new user.",
  *     operationId="register",
- *     tags={"user"},
+ *     tags={"1. User"},
  *     produces={"application/json"},
  *
  *     @SWG\Parameter(
@@ -40,9 +39,8 @@
  *     ),
  * )
  *
- * @SWG\Post(
- *     path="/user/login",
- *     tags={"user"},
+* @SWG\Post( path="/user/login",
+ *     tags={"1. User"},
  *     summary="User Login",
  *     description="Authenticates username and password and logs a user in.",
  *     operationId="login",

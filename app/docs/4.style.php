@@ -6,7 +6,7 @@
  *     summary="Filtered list of styles",
  *     description="Returns filtered list of beer styles",
  *     operationId="getStyles",
- *     tags={"style"},
+ *     tags={"4. Style"},
  *     produces={"application/json"},
  * 
  *     @SWG\Parameter(

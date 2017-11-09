@@ -5,7 +5,7 @@ namespace App\ViewModels;
 
 /**
  * @SWG\Definition(
- *   required={"name", "ibu","calories","abv","brewery","location","style"},
+ *   required={"name", "ibu","calories","abv","brewery","location","style_id"},
  *   type="object",
  *   @SWG\Xml(name="BeerViewModel")
  * )

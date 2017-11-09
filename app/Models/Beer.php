@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @SWG\Definition(
  *   definition="Beer",
  *   type="object",
- *   required={"name", "ibu","calories","user_id","abv","brewery","location","style"},
+ *   required={"name", "ibu","calories","user_id","abv","brewery","location","style_id"},
  *   type="object",
  *   @SWG\Xml(name="Beer")
  * )

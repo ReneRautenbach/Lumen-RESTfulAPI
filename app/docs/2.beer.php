@@ -5,7 +5,7 @@
  *     summary="List all Beers",
  *     description="Returns a list of beers",
  *     operationId="getAllBeers",
- *     tags={"beer"},
+ *     tags={"2. Beer"},
  *     produces={"application/json"},
 
  *     @SWG\Parameter(
@@ -74,7 +74,7 @@
  *     summary="Return the beer with the given id",
  *     description="Return the beer with given id",
  *     operationId="getBeer",
- *     tags={"beer"},
+ *     tags={"2. Beer"},
  *     produces={"application/json"}, 
  *      @SWG\Parameter(
  *         name="beer_id",
@@ -103,7 +103,7 @@
  *     summary="Add Beer",
  *     description="Creates a beer if request parameters are valid and the user is allowed to create a beer.",
  *     operationId="createBeer",
- *     tags={"beer"},
+ *     tags={"2. Beer"},
  *     produces={"application/json"},  
  *     @SWG\Parameter(
  *         name="Authorization",

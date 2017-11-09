@@ -15,10 +15,106 @@
         "https"
     ],
     "paths": {
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "1. User"
+                ],
+                "summary": "Register a new user",
+                "description": "Creates a new user.",
+                "operationId": "register",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User Object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserRegisterViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User added",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity."
+                    },
+                    "405": {
+                        "description": "User not added. Validation failed."
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "1. User"
+                ],
+                "summary": "User Login",
+                "description": "Authenticates username and password and logs a user in.",
+                "operationId": "login",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User Email and password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginViewModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "headers": {
+                            "X-Rate-Limit": {
+                                "description": "calls per hour allowed by the user",
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/beers": {
             "get": {
                 "tags": [
-                    "beer"
+                    "2. Beer"
                 ],
                 "summary": "List all Beers",
                 "description": "Returns a list of beers",
@@ -124,7 +220,7 @@
             },
             "post": {
                 "tags": [
-                    "beer"
+                    "2. Beer"
                 ],
                 "summary": "Add Beer",
                 "description": "Creates a beer if request parameters are valid and the user is allowed to create a beer.",
@@ -172,7 +268,7 @@
         "/beers/{beer_id}": {
             "get": {
                 "tags": [
-                    "beer"
+                    "2. Beer"
                 ],
                 "summary": "Return the beer with the given id",
                 "description": "Return the beer with given id",
@@ -219,7 +315,7 @@
         "/reviews/{review_id}": {
             "get": {
                 "tags": [
-                    "review"
+                    "3.Review"
                 ],
                 "summary": "Return the review with the given id",
                 "description": "Return the review with the given id",
@@ -269,11 +365,11 @@
         "/reviews/overall": {
             "get": {
                 "tags": [
-                    "review"
+                    "3.Review"
                 ],
                 "summary": "Provides the overall ratings of all beers",
-                "description": "Provides the overall ratings of all beers",
-                "operationId": "getBeerReviewOverall",
+                "description": " Calculation:  weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  \r\n *     where:\r\n *     R = average for the beer (mean) = (Rating)\r\n *     v = number of reviews for the beer = (Rate Count)\r\n *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)\r\n *     C = the midpoint of the scale (2.5 in our case)",
+                "operationId": "getBeerReviewOverallAll",
                 "produces": [
                     "application/json"
                 ],
@@ -317,7 +413,7 @@
         "/beers/{beer_id}/reviews": {
             "get": {
                 "tags": [
-                    "review"
+                    "3.Review"
                 ],
                 "summary": "List of reviews for a beer",
                 "description": "List of reviews for a beer",
@@ -368,7 +464,7 @@
             },
             "post": {
                 "tags": [
-                    "review"
+                    "3.Review"
                 ],
                 "summary": "Add a review of a beer",
                 "description": "Creates a review if request parameters are valid and the user is allowed to create a beer review. One review per user per beer is allowed.",
@@ -443,10 +539,10 @@
         "/beers/{beer_id}/reviews/overall": {
             "get": {
                 "tags": [
-                    "review"
+                    "3.Review"
                 ],
                 "summary": "Provides the overall rating of a beer",
-                "description": " Calculation weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  \r\n *     where:\r\n *     R = average for the beer (mean) = (Rating)\r\n *     v = number of reviews for the beer = (Rate Count)\r\n *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)\r\n *     C = the midpoint of the scale (2.75 in our case)",
+                "description": " Calculation:  weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  \r\n *     where:\r\n *     R = average for the beer (mean) = (Rating)\r\n *     v = number of reviews for the beer = (Rate Count)\r\n *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)\r\n *     C = the midpoint of the scale (2.5 in our case)",
                 "operationId": "getBeerReviewOverall",
                 "produces": [
                     "application/json"
@@ -492,7 +588,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not found."
+                        "description": "Review Overall Calculation not available. Beer not found."
                     }
                 }
             }
@@ -500,7 +596,7 @@
         "/styles": {
             "post": {
                 "tags": [
-                    "style"
+                    "4. Style"
                 ],
                 "summary": "Filtered list of styles",
                 "description": "Returns filtered list of beer styles",
@@ -604,102 +700,6 @@
                     }
                 }
             }
-        },
-        "/user/register": {
-            "post": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Register a new user",
-                "description": "Creates a new user.",
-                "operationId": "register",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User Object",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/UserRegisterViewModel"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User added",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "properties": {
-                                    "token": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity."
-                    },
-                    "405": {
-                        "description": "User not added. Validation failed."
-                    }
-                }
-            }
-        },
-        "/user/login": {
-            "post": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "User Login",
-                "description": "Authenticates username and password and logs a user in.",
-                "operationId": "login",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User Email and password",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/UserLoginViewModel"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "properties": {
-                                    "token": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "headers": {
-                            "X-Rate-Limit": {
-                                "description": "calls per hour allowed by the user",
-                                "type": "integer",
-                                "format": "int32"
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -728,7 +728,7 @@
                 "abv",
                 "brewery",
                 "location",
-                "style"
+                "style_id"
             ],
             "properties": {
                 "id": {
@@ -944,7 +944,7 @@
                 "abv",
                 "brewery",
                 "location",
-                "style"
+                "style_id"
             ],
             "properties": {
                 "name": {
@@ -989,11 +989,6 @@
             }
         },
         "FilterViewModel": {
-            "required": [
-                "aroma",
-                "appearance",
-                "taste"
-            ],
             "properties": {
                 "filter": {
                     "description": "",
@@ -1147,12 +1142,14 @@
                 "email": {
                     "description": "",
                     "type": "string",
-                    "format": "string"
+                    "format": "email",
+                    "example": "test@test.com"
                 },
                 "password": {
-                    "description": "",
+                    "description": "Required, minimum length=6",
                     "type": "string",
-                    "format": "string"
+                    "format": "password",
+                    "example": "test12"
                 }
             },
             "type": "object",
@@ -1170,22 +1167,25 @@
                 "name": {
                     "description": "",
                     "type": "string",
-                    "format": "string"
+                    "example": "test2"
                 },
                 "email": {
                     "description": "",
                     "type": "string",
-                    "format": "string"
+                    "format": "email",
+                    "example": "test2@test.com"
                 },
                 "password": {
-                    "description": "",
+                    "description": "Required, minimum length=6",
                     "type": "string",
-                    "format": "string"
+                    "format": "password",
+                    "example": "test12"
                 },
                 "password_confirmation": {
-                    "description": "",
+                    "description": "Required, minimum length=6",
                     "type": "string",
-                    "format": "string"
+                    "format": "password",
+                    "example": "test12"
                 }
             },
             "type": "object",

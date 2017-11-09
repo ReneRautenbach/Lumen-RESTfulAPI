@@ -4,8 +4,7 @@ namespace App\ViewModels;
  ;
 
 /**
- * @SWG\Definition(
- *   required={"aroma","appearance","taste"},
+ * @SWG\Definition( 
  *   type="object",
  *   @SWG\Xml(name="FilterViewModel")
  * )

@@ -5,7 +5,7 @@
  *     summary="Return the review with the given id",
  *     description="Return the review with the given id",
  *     operationId="getReview",
- *     tags={"review"},
+ *     tags={"3.Review"},
  *     produces={"application/json"},  
  *      @SWG\Parameter(
  *         name="review_id",
@@ -36,9 +36,14 @@
  * 
 * @SWG\Get(  path="/reviews/overall",
  *     summary="Provides the overall ratings of all beers",
- *     description="Provides the overall ratings of all beers",
- *     operationId="getBeerReviewOverall",
- *     tags={"review"},
+ *     description=" Calculation:  weighted rank (WR) = (v / (v+m)) * R + (m / (v+m)) * C  
+ *     where:
+ *     R = average for the beer (mean) = (Rating)
+ *     v = number of reviews for the beer = (Rate Count)
+ *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)
+ *     C = the midpoint of the scale (2.5 in our case)",
+ *     operationId="getBeerReviewOverallAll",
+ *     tags={"3.Review"},
  *     produces={"application/json"},   
  *     @SWG\Response(
  *         response=200,
@@ -71,7 +76,7 @@
  *     summary="List of reviews for a beer",
  *     description="List of reviews for a beer",
  *     operationId="getAllReviews",
- *     tags={"review"},
+ *     tags={"3.Review"},
  *     produces={"application/json"},   
  *      @SWG\Parameter(
  *         name="beer_id",
@@ -110,7 +115,7 @@
  *     m = minimum votes required to be listed in the top beers list (varies according to average of ratecounts for top 50 beers)
  *     C = the midpoint of the scale (2.5 in our case)",
  *     operationId="getBeerReviewOverall",
- *     tags={"review"},
+ *     tags={"3.Review"},
  *     produces={"application/json"},   
  *      @SWG\Parameter(
  *         name="beer_id",
@@ -148,7 +153,7 @@
  *     summary="Add a review of a beer",
  *     description="Creates a review if request parameters are valid and the user is allowed to create a beer review. One review per user per beer is allowed.",
  *     operationId="create",
- *     tags={"review"},
+ *     tags={"3.Review"},
  *     produces={"application/json"},   
  *      @SWG\Parameter(
  *         name="beer_id",
