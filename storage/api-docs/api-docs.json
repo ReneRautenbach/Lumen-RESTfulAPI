@@ -703,22 +703,6 @@
         }
     },
     "definitions": {
-        "ErrorModel": {
-            "required": [
-                "code",
-                "message"
-            ],
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
         "Beer": {
             "required": [
                 "name",
